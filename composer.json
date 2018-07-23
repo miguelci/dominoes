@@ -1,5 +1,5 @@
 {
-  "name": "miguelh/dominos",
+  "name": "miguelh/dominoes",
   "description": "Dominoes programming exercise",
   "authors": [
     {
@@ -16,6 +16,9 @@
     "psr-4": {
       "Dominoes\\": "tests/"
     }
+  },
+  "config": {
+    "bin-dir": "bin"
   },
   "require": {
     "ramsey/uuid": "^3.7"

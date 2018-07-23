@@ -18,4 +18,9 @@ follow the rules above.
     - php app.php
     
 ## To run the tests:
-    - vendor/bin/phpunit tests/ --color
+    - bin/phpunit tests/ --color
+    
+#### Notes
+- Sometimes it's not possible to finish the game because there are no more possibilities
+- Three attempts are made possible and then the game stops
+- The player with less tiles wins.

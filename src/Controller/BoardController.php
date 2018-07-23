@@ -65,13 +65,13 @@ class BoardController
     }
 
     /**
-     * @param $tile
-     * @param $player
-     * @param $finishingAttempts
+     * @param Player $player
+     * @param int    $finishingAttempts
      *
      * @return int
+     * @throws \Exception
      */
-    private function movePlayerOnTheBoard($player, $finishingAttempts): int
+    private function movePlayerOnTheBoard(Player $player, int $finishingAttempts): int
     {
         $tile = null;
         while (! isset($tile)) {

@@ -1,0 +1,26 @@
+{
+  "name": "miguelh/dominos",
+  "description": "Dominoes programming exercise",
+  "authors": [
+    {
+      "name": "Miguel Heitor",
+      "email": "miguelheitor@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Dominoes\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Dominoes\\": "tests/"
+    }
+  },
+  "require": {
+    "ramsey/uuid": "^3.7"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^7.2"
+  }
+}

@@ -61,10 +61,7 @@ class BoardController
                 }
             }
         }
-
-        foreach ($this->eventBus->serialize() as $event) {
-            echo $event['payload'] . PHP_EOL;
-        }
+        $this->showEvents();
     }
 
     /**
@@ -109,7 +106,6 @@ class BoardController
         if (count($player->getTiles()) == 0) {
             $this->eventBus->addEvent(new PlayerWon($player));
             return true;
-
         }
         return false;
     }
@@ -126,9 +122,15 @@ class BoardController
             $player = min($players[0], $players[1]);
             $this->eventBus->addEvent(new NoMoreTiles($player));
             return true;
-
         }
         return false;
+    }
+
+    private function showEvents()
+    {
+        foreach ($this->eventBus->serialize() as $event) {
+            echo $event['payload'] . PHP_EOL;
+        }
     }
 
 }

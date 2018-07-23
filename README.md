@@ -1,5 +1,4 @@
-#Dominoes programming exercise:
-
+##Dominoes programming exercise:
 
 Write a program which allows two players to play Dominoes against each other:
 - The 28 tiles are shuffled face down and form the stock. Each player draws seven tiles.
@@ -20,6 +19,9 @@ follow the rules above.
 ## To run the tests:
     - bin/phpunit tests/ --color
     
+## Requires:
+- PHP 7
+
 #### Notes
 - Sometimes it's not possible to finish the game because there are no more possibilities
 - Three attempts are made possible and then the game stops

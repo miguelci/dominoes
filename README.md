@@ -1,4 +1,5 @@
-##Dominoes programming exercise:
+
+# Dominoes programming exercise:
 
 Write a program which allows two players to play Dominoes against each other:
 - The 28 tiles are shuffled face down and form the stock. Each player draws seven tiles.

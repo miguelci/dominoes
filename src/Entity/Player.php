@@ -52,7 +52,6 @@ class Player
             $this->tiles[(string)$tiles[$tileIndex]->getId()] = $tiles[$tileIndex];
             unset($tiles[$tileIndex]);
         }
-
         return $tiles;
     }
 
@@ -67,10 +66,7 @@ class Player
 
         $this->tiles[(string)$tiles[$tileIndex]->getId()] = $takenTile;
         unset($tiles[$tileIndex]);
-        return [
-            $tiles,
-            $takenTile
-        ];
+        return [$tiles, $takenTile];
 
     }
 
@@ -93,37 +89,27 @@ class Player
 
         $options = $this->getPossibleOptionsToPlay($leftSideToPlay, $rightSideToPlay);
 
-        $totalLeftOptions  = count($options['left_side_options']);
-        $totalRightOptions = count($options['right_side_options']);
+        $totalLeftOptions  = count($options['left_side']);
+        $totalRightOptions = count($options['right_side']);
 
-        if (! $options['left_side_options'] && ! $options['right_side_options']) {
+        if (! $options['left_side'] && ! $options['right_side']) {
             return [$firstOption, $line, $connected];
         }
 
         if ($totalLeftOptions >= $totalRightOptions) {
-            $firstOption = array_pop($options['left_side_options']);
-            $index       = (string)$firstOption->getId();
-            $sides       = $firstOption->getSides();
+            list($firstOption, $index, $connected) = $this->addToTheLeft(
+                $line,
+                array_pop($options['left_side']),
+                $leftSideToPlay
+            );
 
-            if ($sides[1]->getValue() !== $leftSideToPlay->getValue()) {
-                $firstOption = new Tile([$sides[1], $sides[0]]);
-            }
-
-            $connected = $line->getTiles()[0];
-            $line->addLeftTile($firstOption);
 
         } elseif ($totalRightOptions >= $totalLeftOptions) {
-
-            $firstOption = array_pop($options['right_side_options']);
-            $index       = (string)$firstOption->getId();
-
-            $sides = $firstOption->getSides();
-            if ($sides[0]->getValue() !== $rightSideToPlay->getValue()) {
-                $firstOption = new Tile([$sides[1], $sides[0]]);
-            }
-
-            $connected = end($line->getTiles());
-            $line->addRightTile($firstOption);
+            list($firstOption, $index, $connected) = $this->addToTheRight(
+                $line,
+                array_pop($options['right_side']),
+                $rightSideToPlay
+            );
         }
 
         unset($this->tiles[$index]);
@@ -142,14 +128,56 @@ class Player
         foreach ($this->tiles as $tile) {
             foreach ($tile->getSides() as $side) {
                 if ($leftSideToPlay->getValue() === $side->getValue()) {
-                    $options['left_side_options'][] = $tile;
+                    $options['left_side'][] = $tile;
                 }
                 if ($rightSideToPlay->getValue() === $side->getValue()) {
-                    $options['right_side_options'][] = $tile;
+                    $options['right_side'][] = $tile;
                 }
             }
         }
         return $options;
+    }
+
+    /**
+     * @param Line     $line
+     * @param Tile     $tile
+     * @param TileSide $leftSideToPlay
+     *
+     * @return array
+     * @throws \Exception
+     */
+    private function addToTheLeft(Line $line, Tile $tile, TileSide $leftSideToPlay): array
+    {
+        $index = (string)$tile->getId();
+        $sides = $tile->getSides();
+
+        if ($sides[1]->getValue() !== $leftSideToPlay->getValue()) {
+            $tile = new Tile([$sides[1], $sides[0]]);
+        }
+
+        $line->addLeftTile($tile);
+        return [$tile, $index, $line->getTiles()[1]];
+    }
+
+    /**
+     * @param Line     $line
+     * @param Tile     $tile
+     * @param TileSide $rightSideToPlay
+     *
+     * @return array
+     * @throws \Exception
+     */
+    private function addToTheRight(Line $line, Tile $tile, TileSide $rightSideToPlay): array
+    {
+        $index = (string)$tile->getId();
+        $sides = $tile->getSides();
+
+        if ($sides[0]->getValue() !== $rightSideToPlay->getValue()) {
+            $tile = new Tile([$sides[1], $sides[0]]);
+        }
+
+        $line->addRightTile($tile);
+        return [$tile, $index, $line->getTiles()[count($line->getTiles()) - 2]];
     }
 
 }

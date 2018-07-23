@@ -69,9 +69,9 @@ class BoardController
      * @param $player
      * @param $finishingAttempts
      *
-     * @return mixed
+     * @return int
      */
-    private function movePlayerOnTheBoard($player, $finishingAttempts)
+    private function movePlayerOnTheBoard($player, $finishingAttempts): int
     {
         $tile = null;
         while (! isset($tile)) {
@@ -80,18 +80,17 @@ class BoardController
             if ($tile) {
                 $this->board->setLine($line);
                 $this->eventBus->addEvent(new PlayerPlays($player, $tile, $connected));
-
-            } else {
-
-                if (empty($this->board->getTilesToPlay())) {
-                    $finishingAttempts++;
-                    break;
-                }
-
-                list($remainingTiles, $takenTile) = $player->takeOneTile($this->board->getTilesToPlay());
-                $this->board->setTilesToPlay($remainingTiles);
-                $this->eventBus->addEvent(new PlayerDrawsTile($player, $takenTile));
+                return 0;
             }
+
+            if (empty($this->board->getTilesToPlay())) {
+                $finishingAttempts++;
+                break;
+            }
+
+            list($remainingTiles, $takenTile) = $player->takeOneTile($this->board->getTilesToPlay());
+            $this->board->setTilesToPlay($remainingTiles);
+            $this->eventBus->addEvent(new PlayerDrawsTile($player, $takenTile));
         }
         return $finishingAttempts;
     }

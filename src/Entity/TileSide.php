@@ -1,27 +1,18 @@
 <?php
+declare(strict_types=1);
 
 namespace Dominoes\Entity;
 
-
 class TileSide
 {
-
     /** @var int */
     private $value;
 
-    /**
-     * TileSide constructor.
-     *
-     * @param int $value
-     */
     public function __construct(int $value)
     {
         $this->value = $value;
     }
 
-    /**
-     * @return int
-     */
     public function getValue(): int
     {
         return $this->value;
@@ -29,6 +20,6 @@ class TileSide
 
     public function __toString(): string
     {
-        return $this->value;
+        return (string)$this->value;
     }
 }

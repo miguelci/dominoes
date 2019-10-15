@@ -1,8 +1,7 @@
 <?php
-
+declare(strict_types=1);
 
 namespace Dominoes\EventBus;
-
 
 use Dominoes\Entity\TileTest;
 use Dominoes\Events\GameStarting;
@@ -13,17 +12,17 @@ class EventBusTest extends TestCase
     /** @var EventBus */
     private $eventBus;
 
-    protected function setUp()/* The :void return type declaration that should be here would cause a BC issue */
+    protected function setUp(): void
     {
         $this->eventBus = EventBusFactory::makeEventBus();
     }
 
-    public function testItCanBeInitialized()
+    public function testItCanBeInitialized(): void
     {
         $this->assertInstanceOf(EventBus::class, $this->eventBus);
     }
 
-    public function testEventsCanBeAdded()
+    public function testEventsCanBeAdded(): void
     {
         $event = new GameStarting(TileTest::stub());
         $this->eventBus->addEvent($event);

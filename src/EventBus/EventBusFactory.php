@@ -1,17 +1,12 @@
 <?php
-
+declare(strict_types=1);
 
 namespace Dominoes\EventBus;
 
-
 class EventBusFactory
 {
-    /**
-     * @return EventBus
-     */
-    public static function makeEventBus()
+    public static function makeEventBus(): EventBus
     {
         return new EventBus();
     }
-
 }

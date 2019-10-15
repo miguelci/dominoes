@@ -1,20 +1,20 @@
 <?php
-
+declare(strict_types=1);
 
 namespace Dominoes\Service;
 
-
 use Dominoes\Entity\Tile;
 use Dominoes\Entity\TileSide;
+use Exception;
 
 class TileGenerator implements Generator
 {
     const TILE_START = 0;
-    const TILE_END   = 6;
+    const TILE_END = 6;
 
     /**
      * @return Tile[]
-     * @throws \Exception
+     * @throws Exception
      */
     public static function generate(): array
     {

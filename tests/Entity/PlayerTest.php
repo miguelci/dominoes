@@ -1,31 +1,29 @@
 <?php
-
+declare(strict_types=1);
 
 namespace Dominoes\Entity;
 
-
 use Dominoes\Service\TileGeneratorTest;
 use PHPUnit\Framework\TestCase;
-
 
 class PlayerTest extends TestCase
 {
     /** @var Player */
     private $player;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->player = new Player('player_name');
     }
 
-    public function testAPlayerCanBeInstantiated()
+    public function testAPlayerCanBeInstantiated(): void
     {
         $this->assertInstanceOf(Player::class, $this->player);
     }
 
 
-    public function testAPlayerCanTakeTheTilesToInitialize()
+    public function testAPlayerCanTakeTheTilesToInitialize(): void
     {
         $tiles = TileGeneratorTest::stub();
 
@@ -34,7 +32,7 @@ class PlayerTest extends TestCase
         $this->assertEquals(7, count($this->player->getTiles()));
     }
 
-    public function testAPlayerCanAddTilesToTheLine()
+    public function testAPlayerCanAddTilesToTheLine(): void
     {
         /** @var Line $initializeLine */
         $initializeLine = LineTest::stub();

@@ -1,46 +1,32 @@
 <?php
-
+declare(strict_types=1);
 
 namespace Dominoes\Entity;
 
-
 class Line
 {
-
     /** @var Tile[] */
     private $tiles;
 
-    /**
-     * Line constructor.
-     *
-     * @param Tile[] $tiles
-     */
+    /** @param Tile[] $tiles */
     private function __construct(array $tiles)
     {
         $this->tiles = $tiles;
     }
 
-    /**
-     * @return Tile[]
-     */
+    /** @return Tile[] */
     public function getTiles(): array
     {
         return $this->tiles;
     }
 
-    /**
-     * @param Tile[] $tiles
-     */
+    /** @param Tile[] $tiles */
     public function setTiles(array $tiles)
     {
         $this->tiles = $tiles;
     }
 
-    /**
-     * @param Tile[] $tiles
-     *
-     * @return array
-     */
+    /** @param Tile[] $tiles */
     public static function pickFirstTile(array $tiles): array
     {
         $index = array_rand($tiles, 1);
@@ -58,9 +44,7 @@ class Line
         ];
     }
 
-    /**
-     * @return TileSide[]
-     */
+    /** @return TileSide[] */
     public function getSideTilesToPlay(): array
     {
         if (count($this->tiles) === 1) {
@@ -75,23 +59,17 @@ class Line
         ];
     }
 
-    /**
-     * @param Tile $tile
-     */
-    public function addLeftTile($tile)
+    public function addLeftTile(Tile $tile): void
     {
         array_unshift($this->tiles, $tile);
     }
 
-    /**
-     * @param Tile $tile
-     */
-    public function addRightTile($tile)
+    public function addRightTile(Tile $tile): void
     {
         array_push($this->tiles, $tile);
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         $currentLine = '';
         foreach ($this->getTiles() as $tile) {

@@ -1,8 +1,10 @@
 <?php
-
+declare(strict_types=1);
 
 namespace Dominoes\Entity;
 
+use Exception;
+use function var_dump;
 
 class Player
 {
@@ -14,35 +16,25 @@ class Player
     /** @var Tile[] */
     private $tiles;
 
-    /**
-     * Player constructor.
-     *
-     * @param string $name
-     */
-    public function __construct($name)
+    public function __construct(string $name)
     {
-        $this->name  = $name;
+        $this->name = $name;
         $this->tiles = [];
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return Tile[]
-     */
+    /** @return Tile[] */
     public function getTiles(): array
     {
         return $this->tiles;
     }
 
     /**
-     * @param array $tiles
+     * @param Tile[] $tiles
      *
      * @return array
      */
@@ -55,7 +47,8 @@ class Player
         return $tiles;
     }
 
-    public function takeOneTile($tiles)
+    /** @param Tile[] $tiles */
+    public function takeOneTile(array $tiles): array
     {
         if (empty($tiles)) {
             return [[], []];
@@ -73,26 +66,26 @@ class Player
     /**
      * @param Line $line
      *
-     * @return array
-     * @throws \Exception
+     * @return mixed[]
+     * @throws Exception
      */
-    public function move(Line $line)
+    public function move(Line $line): array
     {
         /** @var Tile $endTiles */
         $endTiles = $line->getSideTilesToPlay();
 
-        $leftSideToPlay  = $endTiles[0];
+        $leftSideToPlay = $endTiles[0];
         $rightSideToPlay = $endTiles[1];
-        $index           = null;
-        $connected       = null;
-        $firstOption     = null;
+        $index = null;
+        $connected = null;
+        $firstOption = null;
 
         $options = $this->getPossibleOptionsToPlay($leftSideToPlay, $rightSideToPlay);
 
-        $totalLeftOptions  = count($options['left_side']);
+        $totalLeftOptions = count($options['left_side']);
         $totalRightOptions = count($options['right_side']);
 
-        if (! $options['left_side'] && ! $options['right_side']) {
+        if (!$options['left_side'] && !$options['right_side']) {
             return [$firstOption, $line, $connected];
         }
 
@@ -116,15 +109,12 @@ class Player
         return [$firstOption, $line, $connected];
     }
 
-    /**
-     * @param $leftSideToPlay
-     * @param $rightSideToPlay
-     *
-     * @return mixed
-     */
-    private function getPossibleOptionsToPlay($leftSideToPlay, $rightSideToPlay)
+    private function getPossibleOptionsToPlay(TileSide $leftSideToPlay, TileSide $rightSideToPlay): array
     {
-        $options = [];
+        $options = [
+            'left_side' => [],
+            'right_side' => [],
+        ];
         foreach ($this->tiles as $tile) {
             foreach ($tile->getSides() as $side) {
                 if ($leftSideToPlay->getValue() === $side->getValue()) {
@@ -139,12 +129,8 @@ class Player
     }
 
     /**
-     * @param Line     $line
-     * @param Tile     $tile
-     * @param TileSide $leftSideToPlay
-     *
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     private function addToTheLeft(Line $line, Tile $tile, TileSide $leftSideToPlay): array
     {
@@ -160,12 +146,8 @@ class Player
     }
 
     /**
-     * @param Line     $line
-     * @param Tile     $tile
-     * @param TileSide $rightSideToPlay
-     *
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     private function addToTheRight(Line $line, Tile $tile, TileSide $rightSideToPlay): array
     {

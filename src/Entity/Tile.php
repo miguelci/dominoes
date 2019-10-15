@@ -1,12 +1,13 @@
 <?php
+declare(strict_types=1);
 
 namespace Dominoes\Entity;
 
+use Exception;
 use Ramsey\Uuid\Uuid;
 
 class Tile
 {
-
     /** @var Uuid */
     private $id;
 
@@ -18,31 +19,26 @@ class Tile
      *
      * @param TileSide[] $sides
      *
-     * @throws \Exception
+     * @throws Exception
      */
-    public function __construct($sides)
+    public function __construct(array $sides)
     {
-        $this->id    = Uuid::uuid4();
+        $this->id = Uuid::uuid4();
         $this->sides = $sides;
     }
 
-    /**
-     * @return Uuid
-     */
     public function getId(): Uuid
     {
         return $this->id;
     }
 
-    /**
-     * @return TileSide[]
-     */
+    /** @return TileSide[] */
     public function getSides(): array
     {
         return $this->sides;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return '<' . $this->getSides()[0]->getValue() . ':' . $this->getSides()[1]->getValue() . '>';
     }

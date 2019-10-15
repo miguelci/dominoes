@@ -1,10 +1,10 @@
 <?php
-
+declare(strict_types=1);
 
 namespace Dominoes\Entity;
 
-
 use Dominoes\Entity\Tile;
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 class TileTest extends TestCase
@@ -13,21 +13,21 @@ class TileTest extends TestCase
     private $tile;
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->tile = new Tile(TileSideTest::stubForTile());
     }
 
-    public function testItCanBeInstantiated()
+    public function testItCanBeInstantiated(): void
     {
         $this->assertInstanceOf(Tile::class, $this->tile);
     }
 
     /**
      * @return Tile
-     * @throws \Exception
+     * @throws Exception
      */
     public static function stub(): Tile
     {
@@ -36,7 +36,7 @@ class TileTest extends TestCase
 
     /**
      * @return Tile[]
-     * @throws \Exception
+     * @throws Exception
      */
     public static function stubForLine(): array
     {
@@ -45,7 +45,7 @@ class TileTest extends TestCase
 
     /**
      * @return Tile[]
-     * @throws \Exception
+     * @throws Exception
      */
     public static function stubForLineSameValue(): array
     {

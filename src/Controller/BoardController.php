@@ -1,8 +1,7 @@
 <?php
-
+declare(strict_types=1);
 
 namespace Dominoes\Controller;
-
 
 use Dominoes\Entity\Board;
 use Dominoes\Entity\Player;
@@ -24,25 +23,21 @@ class BoardController
     /** @var Board */
     private $board;
 
-    /**
-     * BoardController constructor.
-     *
-     */
     public function __construct()
     {
         $this->eventBus = EventBusFactory::makeEventBus();
-        $this->board    = Board::init(new TileGenerator());
+        $this->board = Board::init(new TileGenerator());
     }
 
-    public function execute()
+    public function execute(): void
     {
         $this->eventBus->addEvent(new GameStarting($this->board->getLine()->getTiles()[0]));
 
         $finishingAttempts = 0;
-        $someoneFinished   = false;
-        $players           = $this->board->getPlayers();
+        $someoneFinished = false;
+        $players = $this->board->getPlayers();
 
-        while (! $someoneFinished) {
+        while (!$someoneFinished) {
 
             foreach ($players as $player) {
 
@@ -64,17 +59,10 @@ class BoardController
         $this->showEvents();
     }
 
-    /**
-     * @param Player $player
-     * @param int    $finishingAttempts
-     *
-     * @return int
-     * @throws \Exception
-     */
     private function movePlayerOnTheBoard(Player $player, int $finishingAttempts): int
     {
         $tile = null;
-        while (! isset($tile)) {
+        while (!isset($tile)) {
             list($tile, $line, $connected) = $player->move($this->board->getLine());
 
             if ($tile) {
@@ -95,26 +83,16 @@ class BoardController
         return $finishingAttempts;
     }
 
-    /**
-     * @param Player $player
-     *
-     * @return bool
-     */
     private function playerTilesFinished(Player $player): bool
     {
-        if (count($player->getTiles()) == 0) {
+        if (count($player->getTiles()) === 0) {
             $this->eventBus->addEvent(new PlayerWon($player));
             return true;
         }
         return false;
     }
 
-    /**
-     * @param Player[] $players
-     * @param int      $finishingAttempts
-     *
-     * @return bool
-     */
+    /** @param Player[] $players */
     private function availableTilesAreOver(array $players, int $finishingAttempts): bool
     {
         if ($finishingAttempts >= 3) {
@@ -125,7 +103,7 @@ class BoardController
         return false;
     }
 
-    private function showEvents()
+    private function showEvents(): void
     {
         foreach ($this->eventBus->serialize() as $event) {
             echo $event['payload'] . PHP_EOL;
